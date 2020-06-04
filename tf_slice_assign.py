@@ -14,6 +14,9 @@ def slice_assign(sliced_tensor, assigned_tensor, *slice_args, verbose=0):
         - assigned_tensor (tf.Tensor): the tensor which you want assigned.
         - *slice_args (str or slice): the slices arguments. Can be ':', '...'
         or slice.
+
+    Returns:
+        - tf.Tensor: the original tensor with the slice correctly assigned.
     """
     shape = tf.shape(sliced_tensor)
     n_dims = len(shape)
