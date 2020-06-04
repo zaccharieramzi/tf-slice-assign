@@ -19,6 +19,7 @@ def handle_slice_arg(slice_arg):
     ((8,), [slice(2, 4)]),
     ((8, 2), [slice(2, 4)]),
     ((8, 16), [':', slice(12, 14)]),
+    ((2, 16, 16, 1), [':', slice(None, None, 2), slice(None, None, 2)]),
 ])
 def test_slice_assign(tensor_shape, slice_args):
     original_tensor = np.random.normal(size=tensor_shape)
