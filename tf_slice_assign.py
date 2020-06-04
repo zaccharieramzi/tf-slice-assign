@@ -20,24 +20,36 @@ def slice_assign(sliced_tensor, assigned_tensor, *slice_args):
     n_slices = len(slice_args)
     dims_to_index = []
     corresponding_ranges = []
-    three_dots = False
+    ellipsis = False
     for i_dim, slice_spec in enumerate(slice_args):
         if isinstance(slice_spec, str):
             if slice_spec == ':':
                 continue
             elif slice_spec == '...':
-                three_dots = True
+                ellipsis = True
             else:
                 raise ValueError('Slices must be :, ..., or slice object.')
+        elif isinstance(slice_spec, Ellipsis):
+            ellipsis = True
         else:
             start, stop, step = slice_spec.start, slice_spec.stop, slice_spec.step
-            if step is None:
-                step = 1
-            corresponding_range = tf.range(start, stop, step)
-            if three_dots:
-                dims_to_index.append(i_dim + (n_dims - n_slices))
+            no_start = start is None or start == 0
+            no_stop = stop is None or stop == -1
+            no_step = step is None or step == 1
+            if no_start and no_stop and no_step:
+                continue
+            if ellipsis:
+                real_index = i_dim + (n_dims - n_slices)
             else:
-                dims_to_index.append(i_dim)
+                real_index = i_dim
+            dims_to_index.append(real_index)
+            if no_step:
+                step = 1
+            if no_stop:
+                stop = tf.shape(sliced_tensor)[real_index]
+            if no_start:
+                start = 0
+            corresponding_range = tf.range(start, stop, step)
             corresponding_ranges.append(corresponding_range)
     dims_left_out = [
         i_dim for i_dim in range(n_dims) if i_dim not in dims_to_index
