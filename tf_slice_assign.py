@@ -15,7 +15,8 @@ def slice_assign(sliced_tensor, assigned_tensor, *slice_args, verbose=0):
         - *slice_args (str or slice): the slices arguments. Can be ':', '...'
         or slice.
     """
-    n_dims = len(tf.shape(sliced_tensor))
+    shape = tf.shape(sliced_tensor)
+    n_dims = len(shape)
     # parsing the slice specifications
     n_slices = len(slice_args)
     dims_to_index = []
@@ -46,7 +47,7 @@ def slice_assign(sliced_tensor, assigned_tensor, *slice_args, verbose=0):
             if no_step:
                 step = 1
             if no_stop:
-                stop = tf.shape(sliced_tensor)[real_index]
+                stop = shape[real_index]
             if no_start:
                 start = 0
             corresponding_range = tf.range(start, stop, step)
@@ -63,7 +64,8 @@ def slice_assign(sliced_tensor, assigned_tensor, *slice_args, verbose=0):
     # reshaping the tensors
     sliced_tensor_reshaped = tf.transpose(sliced_tensor, perm=scatted_nd_perm)
     assigned_tensor_reshaped = tf.transpose(assigned_tensor, perm=scatted_nd_perm)
-
+    left_out_shape = [shape[i_dim] for i_dim in dims_left_out]
+    assigned_tensor_reshaped = tf.reshape(assigned_tensor_reshaped, [-1] + left_out_shape)
     # creating the indices
     mesh_ranges = tf.meshgrid(*corresponding_ranges, indexing='xy')
     update_indices = tf.stack([
