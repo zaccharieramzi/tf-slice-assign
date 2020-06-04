@@ -67,7 +67,7 @@ def slice_assign(sliced_tensor, assigned_tensor, *slice_args, verbose=0):
     left_out_shape = [shape[i_dim] for i_dim in dims_left_out]
     assigned_tensor_reshaped = tf.reshape(assigned_tensor_reshaped, [-1] + left_out_shape)
     # creating the indices
-    mesh_ranges = tf.meshgrid(*corresponding_ranges, indexing='xy')
+    mesh_ranges = tf.meshgrid(*corresponding_ranges, indexing='ij')
     update_indices = tf.stack([
         tf.reshape(slicing_range, (-1))
         for slicing_range in mesh_ranges
