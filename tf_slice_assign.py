@@ -1,3 +1,6 @@
+import numpy as np
+# NOTE: numpy is imported for argsorting. We might not use it but then lose in
+# code clarity (and a bit in speed but negligible).
 import tensorflow as tf
 
 
@@ -13,6 +16,7 @@ def slice_assign(sliced_tensor, assigned_tensor, *slice_args):
         or slice.
     """
     n_dims = len(tf.shape(sliced_tensor))
+    # parsing the slice specifications
     n_slices = len(slice_args)
     dims_to_index = []
     corresponding_ranges = []
@@ -35,13 +39,30 @@ def slice_assign(sliced_tensor, assigned_tensor, *slice_args):
             else:
                 dims_to_index.append(i_dim)
             corresponding_ranges.append(corresponding_range)
-    sliced_tensor_reshaped = sliced_tensor
-    update_indices = []
-    assigned_tensor_reshaped = assigned_tensor
+    dims_left_out = [
+        i_dim for i_dim in range(n_dims) if i_dim not in dims_to_index
+    ]
+    scatted_nd_perm = dims_to_index + dims_left_out
+    inverse_scatter_nd_perm = list(np.argsort(scatted_nd_perm))
+    # reshaping the tensors
+    sliced_tensor_reshaped = tf.transpose(sliced_tensor, perm=scatted_nd_perm)
+    assigned_tensor_reshaped = tf.transpose(assigned_tensor, perm=scatted_nd_perm)
+
+    # creating the indices
+    mesh_ranges = tf.meshgrid(*corresponding_ranges, indexing='xy')
+    update_indices = tf.stack([
+        tf.reshape(slicing_range, (-1))
+        for slicing_range in mesh_ranges
+    ], axis=-1)
+
+    # finalisation
     sliced_tensor_reshaped = tf.tensor_scatter_nd_update(
         tensor=sliced_tensor_reshaped,
         indices=update_indices,
         updates=assigned_tensor_reshaped,
     )
-    sliced_tensor_updated = sliced_tensor_reshaped
+    sliced_tensor_updated = tf.transpose(
+        sliced_tensor_reshaped,
+        perm=inverse_scatter_nd_perm,
+    )
     return sliced_tensor_updated
