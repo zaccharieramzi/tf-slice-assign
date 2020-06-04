@@ -1,5 +1,7 @@
 # tf-slice-assign
 
+[![Build Status](https://travis-ci.com/zaccharieramzi/tf-slice-assign.svg?token=wHL4tmyGD3TP6bSo6Mdh&branch=master)](https://travis-ci.com/zaccharieramzi/tf-slice-assign)
+
 A tool for assignment to a slice in TensorFlow.
 
 In TensorFlow, as opposed to Pytorch, it is currently impossible to assign to
