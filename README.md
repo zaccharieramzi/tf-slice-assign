@@ -19,6 +19,12 @@ new_tensor = slice_assign(old_tensor, assignment, *slice_args)
 
 You can find a relatively simple example [here](example.py).
 
+## Installation
+
+```
+pip install tf-slice-assign
+```
+
 ## List of GitHub issues and StackOverflow questions regarding TensorFlow slice assignment
 In the following table, I am trying to give the reasons as to why no mitigation
 for the current problem exists.
