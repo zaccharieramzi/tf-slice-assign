@@ -9,6 +9,7 @@ the slice of a tensor in a range of different settings.
 To mitigate this issue, `tf-slice-assign` introduces a single function that
 allows to do exactly this using [`tensor_scatter_nd_update`](https://www.tensorflow.org/api_docs/python/tf/tensor_scatter_nd_update).
 
+You can find a relatively simple example [here](example.py).
 
 ## List of GitHub issues and StackOverflow questions regarding TensorFlow slice assignment
 In the following table, I am trying to give the reasons as to why no mitigation
