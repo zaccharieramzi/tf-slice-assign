@@ -62,6 +62,8 @@ def slice_assign(sliced_tensor, assigned_tensor, *slice_args, verbose=0):
     scatted_nd_perm = dims_to_index + dims_left_out
     inverse_scatter_nd_perm = list(np.argsort(scatted_nd_perm))
     # reshaping the tensors
+    # NOTE: the tensors are reshaped to allow for easier indexing with
+    # tensor_scatter_nd_update
     sliced_tensor_reshaped = tf.transpose(sliced_tensor, perm=scatted_nd_perm)
     assigned_tensor_reshaped = tf.transpose(assigned_tensor, perm=scatted_nd_perm)
     left_out_shape = [shape[i_dim] for i_dim in dims_left_out]
