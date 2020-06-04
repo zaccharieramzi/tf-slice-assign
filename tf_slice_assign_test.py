@@ -16,6 +16,9 @@ def handle_slice_arg(slice_arg):
 
 @pytest.mark.parametrize('tensor_shape, slice_args', [
     ((8,), ['...']),
+    ((8,), [slice(2, 4)]),
+    ((8, 2), [slice(2, 4)]),
+    ((8, 16), [':', slice(12, 14)]),
 ])
 def test_slice_assign(tensor_shape, slice_args):
     original_tensor = np.random.normal(size=tensor_shape)
@@ -23,7 +26,7 @@ def test_slice_assign(tensor_shape, slice_args):
         handle_slice_arg(slice_arg) for slice_arg in slice_args
     ])
     original_tensor_slice = original_tensor[numpy_slices]
-    assigned_tensor =  np.random.normal(size=original_tensor_slice.shape)
+    assigned_tensor = np.random.normal(size=original_tensor_slice.shape)
     expected_result = original_tensor[:]
     expected_result[numpy_slices] = assigned_tensor
     result = slice_assign(
