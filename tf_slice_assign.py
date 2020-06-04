@@ -4,7 +4,7 @@ import numpy as np
 import tensorflow as tf
 
 
-def slice_assign(sliced_tensor, assigned_tensor, *slice_args):
+def slice_assign(sliced_tensor, assigned_tensor, *slice_args, verbose=0):
     """Assign a tensor to the slice of another tensor.
 
     No broadcast is performed.
@@ -51,6 +51,10 @@ def slice_assign(sliced_tensor, assigned_tensor, *slice_args):
                 start = 0
             corresponding_range = tf.range(start, stop, step)
             corresponding_ranges.append(corresponding_range)
+    if not dims_to_index:
+        if verbose > 0:
+            print('Warning: no slicing performed')
+        return assigned_tensor
     dims_left_out = [
         i_dim for i_dim in range(n_dims) if i_dim not in dims_to_index
     ]
