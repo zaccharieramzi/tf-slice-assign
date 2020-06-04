@@ -1,0 +1,7 @@
+language: python
+install:
+  - pip install pytest numpy
+  - pip install tensorflow
+
+script:
+  - pytest tf_slice_assign_test.py
