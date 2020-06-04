@@ -27,6 +27,8 @@ def slice_assign(sliced_tensor, assigned_tensor, *slice_args):
                 raise ValueError('Slices must be :, ..., or slice object.')
         else:
             start, stop, step = slice_spec.start, slice_spec.stop, slice_spec.step
+            if step is None:
+                step = 1
             corresponding_range = tf.range(start, stop, step)
             if three_dots:
                 dims_to_index.append(i_dim + (n_dims - n_slices))
