@@ -29,7 +29,7 @@ def slice_assign(sliced_tensor, assigned_tensor, *slice_args, verbose=0):
                 ellipsis = True
             else:
                 raise ValueError('Slices must be :, ..., or slice object.')
-        elif isinstance(slice_spec, Ellipsis):
+        elif slice_spec is Ellipsis:
             ellipsis = True
         else:
             start, stop, step = slice_spec.start, slice_spec.stop, slice_spec.step
