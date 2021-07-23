@@ -28,11 +28,11 @@ def load_requirements(path_dir=HERE, comment_char='#'):
             reqs.append(ln)
     return reqs
 
-
+__version__ = "develop"
 # https://packaging.python.org/discussions/install-requires-vs-requirements
 setup(
     name='tf-slice-assign',
-    version='0.0.1',
+    version=__version__,
     description='A package to perform slice assignment in TensorFlow',
     author='Zaccharie Ramzi',
     author_email='zaccharie.ramzi@gmail.com',
