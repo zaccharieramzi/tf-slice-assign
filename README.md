@@ -1,6 +1,6 @@
 # tf-slice-assign
 
-[![Build Status](https://travis-ci.com/zaccharieramzi/tf-slice-assign.svg?token=wHL4tmyGD3TP6bSo6Mdh&branch=master)](https://travis-ci.com/zaccharieramzi/tf-slice-assign)
+![GitHub Workflow Build Status](https://github.com/zaccharieramzi/tf-slice-assign/workflows/Continuous%20testing/badge.svg)
 
 A tool for assignment to a slice in TensorFlow.
 
